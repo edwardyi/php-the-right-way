@@ -16,4 +16,11 @@ $y = 7;
 
 var_dump(foo(y: $y, x: $x));
 
+echo "\n";
+
 var_dump($x, $y);
+
+// unpacking
+$arr = ["x" => 6, "y" => 7];
+
+var_dump(foo(...$arr));
