@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  app:
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+    container_name: the_right_ways_app
+    restart: always
+    volumes:
+      - "./src:/var/www"
+    working_dir: "/var/www"
+  nginx:
+    image: nginx:1.19-alpine
+    container_name: the_right_ways_server
+    ports:
+      - "8190:80"
+    volumes:
+      - "./src:/var/www"
+      - "./nginx:/etc/nginx/conf.d"
