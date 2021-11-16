@@ -4,7 +4,9 @@ namespace App\PaymentGateway\Encapsulation;
 
 class Transaction
 {
-    public function __construct(private float $amount)
+    private float $amount;
+
+    public function __construct(float $amount)
     {
         
     }
