@@ -8,7 +8,7 @@ class Transaction
 
     public function __construct(float $amount)
     {
-        
+        $this->amount = $amount;
     }
 
     public function getAmount(): float
