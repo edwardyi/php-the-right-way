@@ -17,6 +17,11 @@ class AllInOneMaker extends CoffeeMaker
         LatteTrait::makeLatte as makeOriginalLatte;
     }
 
+    public function makeLatte()
+    {
+        echo __CLASS__." with allInOne final override testing".PHP_EOL;
+    }
+
     public function getMilkType(): string
     {
         return 'wheat milk';

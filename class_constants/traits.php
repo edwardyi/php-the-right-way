@@ -3,6 +3,7 @@
 use App\Traits\AllInOneMaker;
 use App\Traits\CappuccinoMaker;
 use App\Traits\CoffeeMaker;
+use App\Traits\Customers;
 use App\Traits\LatteMaker;
 
 require_once("./vendor/autoload.php");
@@ -37,3 +38,6 @@ var_dump(AllInOneMaker::$x);
 
 CoffeeMaker::$x = "testing";
 var_dump(CoffeeMaker::$x, AllInOneMaker::$x, $latteMaker::$x);
+
+$customer = new Customers();
+$customer->process();
