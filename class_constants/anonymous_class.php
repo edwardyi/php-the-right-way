@@ -13,7 +13,7 @@ $obj = new Class(112, "testing") extends MyClass implements MyInterface {
     }
     public function foo()
     {
-        echo 'foo'.PHP_EOL;
+        echo static::class.' foo'.PHP_EOL;
     }
 
     public function hello()
