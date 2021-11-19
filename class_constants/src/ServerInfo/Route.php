@@ -10,6 +10,11 @@ class Route
 {
     public array $routes = [];
 
+    public function route()
+    {
+        return $this->routes;
+    }
+
     /**
      * register
      *
@@ -17,22 +22,43 @@ class Route
      * @param callable|array $action
      * @return self
      */
-    public function register(string $route, callable|array $action): self
+    public function register(string $requestMethod, string $route, callable|array $action): self
     {
-        $this->routes[$route] = $action;
+        $this->routes[$requestMethod][$route] = $action;
 
         return $this;
     }
 
-    public function resolve(string $requestUri)
+    public function get(string $route, callable|array $action) 
+    {
+        $this->register('get', $route, $action);
+
+        return $this;
+    }
+
+    public function post(string $route, callable|array $action) 
+    {
+        $this->register('post', $route, $action);
+
+        return $this;
+    }
+
+    /**
+     * resolve
+     *
+     * @param string $requestUri
+     * @return void
+     */
+    public function resolve(string $requestUri, string $requestMethod)
     {
         // modify super global variable to find route 
         $route = explode('?', $requestUri)[0];
 
         // get action from routes array
-        $action = $this->routes[$route] ?? null;
+        $action = $this->routes[$requestMethod][$route] ?? null;
 
-        // var_dump($action, $route);
+        // var_dump($action, $route, $requestMethod);
+        // exit;
 
         if (!$action) {
             throw new RouteNotFoundException();
