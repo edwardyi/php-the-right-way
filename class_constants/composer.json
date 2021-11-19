@@ -4,5 +4,7 @@
             "App\\": "src/"
         }
     },
-    "require": {}
+    "require": {
+        "nesbot/carbon": "^2.54"
+    }
 }
