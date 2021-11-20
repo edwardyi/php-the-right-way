@@ -14,6 +14,9 @@ session_start();
 // echo phpinfo();
 // exit;
 
+
+define("STORAGE_PATH", __DIR__.'/storage');
+
 $route = new Route();
 
 $route->get(
@@ -48,9 +51,14 @@ echo $route->get(
 )->post(
     '/server_info.php/invoice/store',
     [Invoice::class, 'store']
+)->get(
+    '/server_info.php/invoice/upload',
+    [Invoice::class, 'upload']
+)->post(
+    '/server_info.php/invoice/file_process',
+    [Invoice::class, 'file_process']
 )->resolve($_SERVER['REQUEST_URI'], strtolower($_SERVER['REQUEST_METHOD']));  // REQUEST_METHOD
 // pass super global variable
-
 
 
 var_dump($_SESSION);

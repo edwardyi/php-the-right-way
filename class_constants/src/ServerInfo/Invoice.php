@@ -54,4 +54,39 @@ class Invoice
         unset($_SESSION['count']);
         return 'store';
     }
+
+    public function upload()
+    {
+        return <<<FROM
+            <form action="file_process" enctype="multipart/form-data" method="post">
+                <input type="file" name="receipt[]"/>
+                <input type="file" name="receipt[]"/>
+                <input type="submit" name="Submit"/>
+            </form>
+        FROM;
+    }
+
+    public function file_process()
+    {
+        $fileNames = $_FILES['receipt']['name'];
+
+        foreach ($fileNames as $key => $fileName) {
+
+            $filePath = STORAGE_PATH.'/'.$fileName;
+
+            // https://www.tehplayground.com/fZhB87K9mffHYkd1
+            $extension = pathinfo($filePath);
+
+            if (in_array($extension, ['pdf', 'png', 'jpg'])) {
+                move_uploaded_file($_FILES['receipt']['tmp_name'][$key], $filePath);
+            }
+            // var_dump(pathinfo($filePath));
+
+            echo '.';
+        }
+
+        echo "<pre>";
+        var_dump($_FILES);
+        echo "</pre>";
+    }
 }
