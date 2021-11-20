@@ -6,6 +6,9 @@ use App\ServerInfo\Route;
 
 require_once("./vendor/autoload.php");
 
+set_exception_handler(function (\Throwable $e) {
+    var_dump($e->getMessage());
+});
 
 session_start();
 // echo phpinfo();

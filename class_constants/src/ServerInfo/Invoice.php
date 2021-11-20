@@ -4,12 +4,28 @@ declare(strict_types=1);
 
 namespace App\ServerInfo;
 
+use Exception;
+use ValueError;
+
 class Invoice
 {
     public function index()
     {
         echo 'output before cookie';
-        setcookie("username", "demo account", 10, path: "/server_info.php", domain: "", secure: false, httponly: false);
+
+        setcookie("username", "demo account", time() + 10, path: "/server_info.php", domain: "", secure: false, httponly: false);
+
+        $options  =[
+            'expires' => time() + 5,  // 'expires' 
+            'path' => "/server_info.php",  // 'path'
+            "domain" => "", // example mysite.com // "domain"
+            "secure" => false,  // "secure"
+            "httponly" => false // "httponly"
+        ];
+
+        // var_dump($options);
+        setcookie("option", "testing", $options);
+
         echo "<pre>";
         var_dump($_GET);
         echo "</pre>";
