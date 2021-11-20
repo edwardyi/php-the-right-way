@@ -61,6 +61,7 @@ class Route
         // exit;
 
         if (!$action) {
+            header("HTTP/1.0 404 Not Found");
             throw new RouteNotFoundException();
         }
 
@@ -68,7 +69,6 @@ class Route
             // invoke callable action
             return call_user_func($action);
         }
-        
         
         if (is_array($action)) {
             [$class, $method] = $action;
@@ -83,7 +83,7 @@ class Route
             }
         }
 
-
+        header("HTTP/1.0 404 Not Found");
         throw new RouteNotFoundException();
     }
 }

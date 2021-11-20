@@ -8,6 +8,8 @@ class Invoice
 {
     public function index()
     {
+        echo 'output before cookie';
+        setcookie("username", "demo account", 10, path: "/server_info.php", domain: "", secure: false, httponly: false);
         echo "<pre>";
         var_dump($_GET);
         echo "</pre>";
@@ -32,6 +34,8 @@ class Invoice
     public function store()
     {
         var_dump($_POST['amount']);
+
+        unset($_SESSION['count']);
         return 'store';
     }
 }
