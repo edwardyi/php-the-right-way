@@ -1,13 +1,13 @@
 <?php
 
-use App\ServerInfo\Home;
-use App\ServerInfo\Invoice;
+use App\ServerInfo\Controllers\Home;
+use App\ServerInfo\Controllers\Invoice;
 use App\ServerInfo\Route;
 
 require_once("./vendor/autoload.php");
 
 set_exception_handler(function (\Throwable $e) {
-    var_dump($e->getMessage());
+    var_dump('exception:', $e->getMessage());
 });
 
 session_start();
@@ -16,6 +16,7 @@ session_start();
 
 
 define("STORAGE_PATH", __DIR__.'/src/ServerInfo/storage');
+define("VIEW_PATH", __DIR__.'/src/ServerInfo/Views');
 
 $route = new Route();
 

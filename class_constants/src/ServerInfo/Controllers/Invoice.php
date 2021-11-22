@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\ServerInfo;
+namespace App\ServerInfo\Controllers;
 
-use Exception;
-use ValueError;
+use App\ServerInfo\View;
 
 class Invoice
 {
-    public function index()
+    public function index(): string
     {
         echo 'output before cookie';
 
@@ -36,10 +35,7 @@ class Invoice
         var_dump($_REQUEST);
         echo "</pre>";
 
-        // var_dump($_SERVER);
-
-        //  return '<form method="POST" action="?amount=100"><label>Amount:</label><input type="text" name="amount" /></form>';
-        return '<form method="POST" action="/server_info.php/invoice/store"><label>Amount:</label><input type="text" name="amount" /></form>';
+        return View::make("/Invoice/index")->render(true);
     }
 
     public function create()
