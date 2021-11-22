@@ -15,7 +15,7 @@ session_start();
 // exit;
 
 
-define("STORAGE_PATH", __DIR__.'/storage');
+define("STORAGE_PATH", __DIR__.'/src/ServerInfo/storage');
 
 $route = new Route();
 

@@ -72,15 +72,20 @@ class Invoice
 
         foreach ($fileNames as $key => $fileName) {
 
+            if (!$fileName) {
+                continue;
+            }
+
             $filePath = STORAGE_PATH.'/'.$fileName;
 
             // https://www.tehplayground.com/fZhB87K9mffHYkd1
-            $extension = pathinfo($filePath);
+            ['extension' => $extension] = pathinfo($filePath);
 
             if (in_array($extension, ['pdf', 'png', 'jpg'])) {
                 move_uploaded_file($_FILES['receipt']['tmp_name'][$key], $filePath);
             }
-            // var_dump(pathinfo($filePath));
+
+            // var_dump(pathinfo($filePath), $filePath, $_FILES['receipt']['tmp_name'][$key], in_array($extension, ['pdf', 'png', 'jpg']), $extension);
 
             echo '.';
         }
