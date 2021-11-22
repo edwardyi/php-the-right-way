@@ -61,7 +61,7 @@ class Route
         // exit;
 
         if (!$action) {
-            header("HTTP/1.0 404 Not Found");
+            // header("HTTP/1.0 404 Not Found");
             throw new RouteNotFoundException();
         }
 
@@ -83,7 +83,7 @@ class Route
             }
         }
 
-        header("HTTP/1.0 404 Not Found");
+        // header("HTTP/1.0 404 Not Found");
         throw new RouteNotFoundException();
     }
 }

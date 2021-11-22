@@ -53,13 +53,16 @@ class Invoice
 
     public function upload()
     {
-        return <<<FROM
-            <form action="file_process" enctype="multipart/form-data" method="post">
-                <input type="file" name="receipt[]"/>
-                <input type="file" name="receipt[]"/>
-                <input type="submit" name="Submit"/>
-            </form>
-        FROM;
+        return View::make("/Invoice/upload");
+    }
+
+    public function download()
+    {
+        header("content-type: application:pdf");
+        header('Content-Disposition: attachment;filename=myfile.png');
+
+        // echo file_get_contents(STORAGE_PATH.'/php-logo.png');
+        readfile(STORAGE_PATH.'/php-logo.png');
     }
 
     public function file_process()
@@ -89,5 +92,7 @@ class Invoice
         echo "<pre>";
         var_dump($_FILES);
         echo "</pre>";
+
+        header("Location: /server_info.php/invoice/upload");
     }
 }

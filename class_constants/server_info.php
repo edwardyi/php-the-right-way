@@ -2,7 +2,9 @@
 
 use App\ServerInfo\Controllers\Home;
 use App\ServerInfo\Controllers\Invoice;
+use App\ServerInfo\Exception\RouteNotFoundException;
 use App\ServerInfo\Route;
+use App\ServerInfo\View;
 
 require_once("./vendor/autoload.php");
 
@@ -18,49 +20,61 @@ session_start();
 define("STORAGE_PATH", __DIR__.'/src/ServerInfo/storage');
 define("VIEW_PATH", __DIR__.'/src/ServerInfo/Views');
 
-$route = new Route();
+try {
+    $route = new Route();
 
-$route->get(
-    '/server_info.php', 
-    function() {
-        echo 'Home';
-    }
-);
+    $route->get(
+        '/server_info.php',
+        function() {
+            echo 'Home';
+        }
+    );
 
-$route->get(
-    '/server_info.php/invoice', 
-    function() {
-        echo 'Invoice';
-    }
-);
+    $route->get(
+        '/server_info.php/invoice',
+        function() {
+            echo 'Invoice';
+        }
+    );
 
-echo $route->get(
-    '/server_info.php/home/welcome',
-    [Home::class, 'welcome']
-)->get(
-    '/server_info.php/home/index',
-    [Home::class, 'index']
-)->get(
-    '/server_info.php/home/test',
-    [Home::class, 'test']
-)->get(
-    '/server_info.php/invoice/index',
-    [Invoice::class, 'index']
-)->get(
-    '/server_info.php/invoice/create',
-    [Invoice::class, 'create']
-)->post(
-    '/server_info.php/invoice/store',
-    [Invoice::class, 'store']
-)->get(
-    '/server_info.php/invoice/upload',
-    [Invoice::class, 'upload']
-)->post(
-    '/server_info.php/invoice/file_process',
-    [Invoice::class, 'file_process']
-)->resolve($_SERVER['REQUEST_URI'], strtolower($_SERVER['REQUEST_METHOD']));  // REQUEST_METHOD
-// pass super global variable
-
+    echo $route->get(
+        '/server_info.php/home/welcome',
+        [Home::class, 'welcome']
+    )->get(
+        '/server_info.php/home/index',
+        [Home::class, 'index']
+    )->get(
+        '/server_info.php/home/test',
+        [Home::class, 'test']
+    )->get(
+        '/server_info.php/invoice/index',
+        [Invoice::class, 'index']
+    )->get(
+        '/server_info.php/invoice/create',
+        [Invoice::class, 'create']
+    )->post(
+        '/server_info.php/invoice/store',
+        [Invoice::class, 'store']
+    )->get(
+        '/server_info.php/invoice/upload',
+        [Invoice::class, 'upload']
+    )->get(
+        '/server_info.php/invoice/download',
+        [Invoice::class, 'download']
+    )->post(
+        '/server_info.php/invoice/file_process',
+        [Invoice::class, 'file_process']
+    )->resolve($_SERVER['REQUEST_URI'], strtolower($_SERVER['REQUEST_METHOD']));  // REQUEST_METHOD
+    // pass super global variable
+} catch (RouteNotFoundException $e) {
+    // if (!headers_sent()) {
+    //     // header("HTTP/1.1 404 Not Found");
+    // }
+    http_response_code(404);
+    // echo $e->getMessage();
+    echo View::make("Error/404");
+    exit;
+}
 
 var_dump($_SESSION);
 
