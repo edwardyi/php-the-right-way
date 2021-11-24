@@ -5,11 +5,83 @@ declare(strict_types=1);
 namespace App\ServerInfo\Controllers;
 
 use App\ServerInfo\View;
+use Exception;
 use PDO;
 use PDOException;
+use Throwable;
 
 class Home
 {
+    public function testInsertTransaction()
+    {
+        try {
+            // var_dump($host, $dbName, $user, $password);
+            $db = new PDO("mysql:host=".$_ENV['DB_HOST'].";dbname=".$_ENV['DB_NAME']."", 
+                $_ENV['DB_USERNAME'], 
+                $_ENV['DB_PASSWORD'], [
+                PDO::ATTR_EMULATE_PREPARES => false
+            ]);
+
+        } catch (PDOException $e) {
+            throw new PDOException($e->getMessage(), (int) $e->getCode());
+        }
+        try {
+            $db->beginTransaction();
+
+            $email = 'testInsert9@doe.com';
+            $name = 'InsertTest';
+            // $active = 1;
+            // $date = date("Y-m-d H:i:s", strtotime("11/3/2021 10:00PM"));
+            $amount = 100;
+
+            $newUserStmt = $db->prepare("INSERT INTO Users(email, full_name, is_active, created_at) 
+                VALUES(?, ?, 1, now())");
+
+            $newUserStmt->execute([$email, $name]);
+
+            $userId = (int) $db->lastInsertId();
+            // var_dump($userId);
+            // throw new Exception("testing transactino exception!");
+
+            $newAccountSmt = $db->prepare("INSERT INTO invoices(amount, user_id)
+                VALUES(?, ?)");
+
+            $newAccountSmt->execute([$amount, $userId]);
+
+            $db->commit();
+
+            $queryStmt = $db->prepare("SELECT 
+                invoices.id AS invoice_id, 
+                amount, 
+                full_name,
+                email
+            FROM invoices INNER JOIN Users ON invoices.user_id = Users.id
+            WHERE email = ?");
+
+            $queryStmt->execute([$email]);
+
+            echo "<pre>";
+            var_dump($queryStmt->fetch());
+            echo "</pre>";
+
+            // echo "<pre>";
+            // var_dump($db->query("SELECT * FROM Users WHERE id=".$userId)->fetch(PDO::FETCH_ASSOC));
+
+            // var_dump($db->query("SELECT * FROM invoices WHERE user_id=".$userId)->fetch(PDO::FETCH_ASSOC));
+            // echo "</pre>";
+
+            var_dump($db);
+
+        } catch (Throwable $e) {
+            if ($db->inTransaction()) {
+                var_dump('in transaction:', $e->getMessage());
+                $db->rollback();
+            }
+        }
+
+
+    }
+
     public function index()
     {
         // echo phpinfo();
@@ -82,9 +154,8 @@ class Home
         } catch (PDOException $e) {
             // var_dump($e);
             // replace message try not to expose password
-            throw new PDOException($e->getMessage(), $e->getCode());
+            throw new PDOException($e->getMessage(), (int) $e->getCode());
         }
-
 
         return 'index';
     }

@@ -16,6 +16,8 @@ session_start();
 // echo phpinfo();
 // exit;
 
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 define("STORAGE_PATH", __DIR__.'/src/ServerInfo/storage');
 define("VIEW_PATH", __DIR__.'/src/ServerInfo/Views');
@@ -46,6 +48,9 @@ try {
     )->get(
         '/server_info.php/home/test',
         [Home::class, 'test']
+    )->get(
+        '/server_info.php/home/test-insert',
+        [Home::class, 'testInsertTransaction']
     )->get(
         '/server_info.php/invoice/index',
         [Invoice::class, 'index']
