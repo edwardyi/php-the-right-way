@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\ServerInfo\Controllers;
 
+use App\ServerInfo\App;
+use App\ServerInfo\Models\SignUp;
+use App\ServerInfo\Models\User;
+use App\ServerInfo\Models\Invoice;
 use App\ServerInfo\View;
 use Exception;
 use PDO;
@@ -12,6 +16,37 @@ use Throwable;
 
 class Home
 {
+
+    public function testInsertByModel()
+    {
+        // $db1 = App::db();
+        // $db2 = App::db();
+        // $db3 = App::db();
+
+        // var_dump($db1==$db2, $db2==$db3);
+
+        $email = 'testInsertHelloModel7@doe.com';
+        $name = 'InsertTestModel';
+        // $active = 1;
+        // $date = date("Y-m-d H:i:s", strtotime("11/3/2021 10:00PM"));
+        $amount = 100;
+
+        $userModel = new User();
+        $invoiceModel = new Invoice();
+
+        $invoiceId = (new SignUp($userModel, $invoiceModel))->register(
+            [
+                'email' => $email,
+                'name' =>  $name
+            ],
+            [
+                'amount' => $amount
+            ]
+        );
+
+        return View::make("Invoice/test_model", ['invoice' => $invoiceModel->find($invoiceId)]);
+    }
+
     public function testInsertTransaction()
     {
         try {
@@ -47,7 +82,6 @@ class Home
                 VALUES(?, ?)");
 
             $newAccountSmt->execute([$amount, $userId]);
-
             $db->commit();
 
             $queryStmt = $db->prepare("SELECT 

@@ -3,6 +3,8 @@
 use App\ServerInfo\Controllers\Home;
 use App\ServerInfo\Controllers\Invoice;
 use App\ServerInfo\Exception\RouteNotFoundException;
+use App\ServerInfo\App;
+use App\ServerInfo\Config;
 use App\ServerInfo\Route;
 use App\ServerInfo\View;
 
@@ -39,7 +41,7 @@ try {
         }
     );
 
-    echo $route->get(
+    $route->get(
         '/server_info.php/home/welcome',
         [Home::class, 'welcome']
     )->get(
@@ -51,6 +53,9 @@ try {
     )->get(
         '/server_info.php/home/test-insert',
         [Home::class, 'testInsertTransaction']
+    )->get(
+        '/server_info.php/home/test-insert-by-model',
+        [Home::class, 'testInsertByModel']
     )->get(
         '/server_info.php/invoice/index',
         [Invoice::class, 'index']
@@ -69,7 +74,28 @@ try {
     )->post(
         '/server_info.php/invoice/file_process',
         [Invoice::class, 'file_process']
-    )->resolve($_SERVER['REQUEST_URI'], strtolower($_SERVER['REQUEST_METHOD']));  // REQUEST_METHOD
+    );
+    //->resolve($_SERVER['REQUEST_URI'], strtolower($_SERVER['REQUEST_METHOD']));  // REQUEST_METHOD
+
+    // exit;
+
+// [
+//     'driver' => 'mysql',
+//     'host' => $_ENV['HOST'],
+//     'user' => $_ENV['DB_USER'],
+//     'password' => $_ENV['DB_PASSWORD']
+// ]
+    // pass arguments
+    // $test = (new Config($_ENV))->db;
+    // var_dump($test);
+    // exit;
+    $app = new App($route, [
+        'uri' => $_SERVER["REQUEST_URI"], 
+        'method' => strtolower($_SERVER["REQUEST_METHOD"])
+    ], new Config($_ENV));
+
+    $app->run();
+
     // pass super global variable
 } catch (RouteNotFoundException $e) {
     // if (!headers_sent()) {
