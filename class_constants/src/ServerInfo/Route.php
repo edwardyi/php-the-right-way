@@ -10,7 +10,7 @@ class Route
 {
     public array $routes = [];
 
-    public function route()
+    public function routes()
     {
         return $this->routes;
     }
@@ -70,16 +70,14 @@ class Route
             return call_user_func($action);
         }
         
-        if (is_array($action)) {
-            [$class, $method] = $action;
+        [$class, $method] = $action;
 
-            if (class_exists($class)) {
-                $obj = new $class();
+        if (class_exists($class)) {
+            $obj = new $class();
 
-                if (method_exists($obj, $method)) {
+            if (method_exists($obj, $method)) {
 
-                    return call_user_func_array([$obj, $method], []);
-                }
+                return call_user_func_array([$obj, $method], []);
             }
         }
 
