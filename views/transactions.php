@@ -1,3 +1,6 @@
+<?php 
+use App\Format;
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -34,20 +37,51 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- TODO -->
+                <?php if (count($transactions) > 0):?>
+                    <?php foreach ($transactions as $rowTransaction): ?>
+                        <tr>
+                            <td>
+                                <?php echo Format::date($rowTransaction['date']); ?>
+                            </td>
+                            <td>
+                                <?php echo $rowTransaction['check_number']; ?>
+                            </td>
+                            <td>
+                                <?php echo $rowTransaction['description']; ?>
+                            </td>
+                            <td>
+                                <span <?php echo Format::rowStyle($rowTransaction['amount']); ?>>
+                                    <?php echo Format::money($rowTransaction['amount']); ?>
+                                </span>
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
+                <?php endif; ?>
             </tbody>
             <tfoot>
                 <tr>
                     <th colspan="3">Total Income:</th>
-                    <td><!-- TODO --></td>
+                    <td>
+                        <span <?php echo Format::rowStyle($totals['income']); ?> >
+                            <?php echo Format::money($totals['income']); ?>
+                        </span>
+                    </td>
                 </tr>
                 <tr>
                     <th colspan="3">Total Expense:</th>
-                    <td><!-- TODO --></td>
+                    <td>
+                        <span <?php echo Format::rowStyle($totals['expense']); ?> >
+                            <?php echo Format::money($totals['expense']); ?>
+                        </span>
+                     </td>
                 </tr>
                 <tr>
                     <th colspan="3">Net Total:</th>
-                    <td><!-- TODO --></td>
+                    <td>
+                        <span <?php echo Format::rowStyle($totals['net']); ?> >
+                            <?php echo Format::money($totals['net']); ?> 
+                        </span>
+                    </td>
                 </tr>
             </tfoot>
         </table>

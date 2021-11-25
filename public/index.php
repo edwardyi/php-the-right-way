@@ -18,7 +18,10 @@ define('VIEW_PATH', __DIR__ . '/../views');
 $router = new Router();
 
 $router
-    ->get('/', [HomeController::class, 'index']);
+    ->get('/', [HomeController::class, 'index'])
+    ->get('/upload', [HomeController::class, 'upload'])
+    ->post('/upload', [HomeController::class, 'upload'])
+    ->get('/details', [HomeController::class, 'details']);
 
 (new App(
     $router,
