@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\ServerInfo\Controllers;
 
 use App\ServerInfo\App;
+use App\ServerInfo\Container;
 use App\ServerInfo\Models\SignUp;
 use App\ServerInfo\Models\User;
 use App\ServerInfo\Models\Invoice;
+use App\ServerInfo\Services\InvoiceService;
 use App\ServerInfo\View;
 use Exception;
 use PDO;
@@ -16,6 +18,29 @@ use Throwable;
 
 class Home
 {
+
+    public function __construct(private InvoiceService $invoiceService)
+    {
+    }
+
+    public function testDI()
+    {
+        // method 3
+        $result = $this->invoiceService->process([], 45);
+
+        var_dump($result);
+
+        // method 2
+        // $result = (new Container())->get(InvoiceService::class)->process([], 35);
+
+        // method 1
+        // $result = App::$container->get(InvoiceService::class)->process([], 24);
+
+        // var_dump($result);
+        // echo 'ttt';
+
+        exit;
+    }
 
     public function testInsertByModel()
     {

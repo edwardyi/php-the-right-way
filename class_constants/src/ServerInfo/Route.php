@@ -8,7 +8,12 @@ use App\ServerInfo\Exception\RouteNotFoundException;
 
 class Route
 {
-    public array $routes = [];
+    private array $routes = [];
+
+    public function __construct(private Container $container)
+    {
+
+    }
 
     public function routes()
     {
@@ -73,7 +78,9 @@ class Route
         [$class, $method] = $action;
 
         if (class_exists($class)) {
-            $obj = new $class();
+            // $obj = new $class();
+            // get instance from container
+            $obj = $this->container->get($class);
 
             if (method_exists($obj, $method)) {
 

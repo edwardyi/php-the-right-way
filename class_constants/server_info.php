@@ -5,13 +5,14 @@ use App\ServerInfo\Controllers\Invoice;
 use App\ServerInfo\Exception\RouteNotFoundException;
 use App\ServerInfo\App;
 use App\ServerInfo\Config;
+use App\ServerInfo\Container;
 use App\ServerInfo\Route;
 use App\ServerInfo\View;
 
 require_once("./vendor/autoload.php");
 
 set_exception_handler(function (\Throwable $e) {
-    var_dump('exception:', $e->getMessage());
+    var_dump('exception:', $e->getMessage(), $e->getTraceAsString());
 });
 
 session_start();
@@ -25,7 +26,8 @@ define("STORAGE_PATH", __DIR__.'/src/ServerInfo/storage');
 define("VIEW_PATH", __DIR__.'/src/ServerInfo/Views');
 
 try {
-    $route = new Route();
+    $container = new Container();
+    $route = new Route($container);
 
     $route->get(
         '/server_info.php',
@@ -56,6 +58,9 @@ try {
     )->get(
         '/server_info.php/home/test-insert-by-model',
         [Home::class, 'testInsertByModel']
+    )->get(
+        '/server_info.php/home/test-di',
+        [Home::class, 'testDi']
     )->get(
         '/server_info.php/invoice/index',
         [Invoice::class, 'index']
