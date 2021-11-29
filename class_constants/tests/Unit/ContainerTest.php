@@ -104,6 +104,17 @@ class ContainerTest extends TestCase
         $customerName = 'tttt';
         $amount = 100;
 
+        $testClassWithoutTypeConstructor = new class($customerName, $amount) {
+            public function __construct($customerName, $amount) {
+
+            }
+        };
+
+        $this->expectException(ContainerException::class);
+
+        // $this->expectException(ContainerException::class);
+        $this->container->resolve($testClassWithoutTypeConstructor::class);
+
         $testClassWithConstructor = new class($customerName, $amount) {
             public function __construct(string $customerName, int $amount) {
 
