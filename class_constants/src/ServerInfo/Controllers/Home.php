@@ -28,8 +28,6 @@ class Home
         // method 3
         $result = $this->invoiceService->process([], 45);
 
-        var_dump($result);
-
         // method 2
         // $result = (new Container())->get(InvoiceService::class)->process([], 35);
 

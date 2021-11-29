@@ -36,7 +36,11 @@ class Container implements ContainerInterface
             // get callable entries and pass $this object
             $entries = $this->entries[$id];
 
-            return $entries($this);
+            if (is_callable($entries)) {
+                return $entries($this);
+            }
+
+            $id = $entries;
         }
 
         return $this->resolve($id);
@@ -48,7 +52,7 @@ class Container implements ContainerInterface
     }
 
     // save callable to entries array
-    public function set(string $id, callable $concrete): void
+    public function set(string $id, callable|string $concrete): void
     {
         $this->entries[$id] = $concrete;
     }

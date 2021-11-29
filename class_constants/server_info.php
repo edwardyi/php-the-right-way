@@ -94,7 +94,7 @@ try {
     // $test = (new Config($_ENV))->db;
     // var_dump($test);
     // exit;
-    $app = new App($route, [
+    $app = new App($container, $route, [
         'uri' => $_SERVER["REQUEST_URI"], 
         'method' => strtolower($_SERVER["REQUEST_METHOD"])
     ], new Config($_ENV));

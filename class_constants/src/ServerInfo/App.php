@@ -7,8 +7,11 @@ namespace App\ServerInfo;
 use App\ServerInfo\Exception\RouteNotFoundException;
 use App\ServerInfo\Services\EmailService;
 use App\ServerInfo\Services\InvoiceService;
+use App\ServerInfo\Services\PaddleGatewayService;
+use App\ServerInfo\Services\PaymentGatewayInterface;
 use App\ServerInfo\Services\PaymentGatewayService;
 use App\ServerInfo\Services\SalesTaxService;
+use App\ServerInfo\Services\StripeGatewayService;
 use App\ServerInfo\View;
 
 class App
@@ -17,16 +20,28 @@ class App
     private static DB $db;
 
     // test container
-    public static Container $container;
+    // public static Container $container;
 
-    public function __construct(protected Route $router, protected array $request, protected Config $config)
-    {
+    public function __construct(
+        protected Container $container,
+        protected Route $router, 
+        protected array $request, 
+        protected Config $config
+    ) {
         static::$db = new DB($config->db ?? []);
 
-        static::$container = new Container();
+        // passing callable parameter
+        $this->container->set(PaymentGatewayInterface::class,
+            fn (Container $c) => $c->get(PaddleGatewayService::class)
+        );
+
+        // passing string parameter
+        $this->container->set(PaymentGatewayInterface::class, StripeGatewayService::class);
+        // static::$container = new Container();
 
         // not ideal but works
         // define invoice service
+        /*
         static::$container->set(
             InvoiceService::class,
             function (Container $c) {
@@ -42,6 +57,7 @@ class App
         static::$container->set(SalesTaxService::class, fn()=> new SalesTaxService());
         static::$container->set(PaymentGatewayService::class, fn()=> new PaymentGatewayService());
         static::$container->set(EmailService::class, fn()=> new EmailService());
+        */
     }
 
     // public static function db(): \PDO
