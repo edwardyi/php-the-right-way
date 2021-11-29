@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\ServerInfo\Container;
 use App\ServerInfo\Exception\RouteNotFoundException;
 use App\ServerInfo\Route;
 use PHPUnit\Framework\TestCase;
@@ -11,7 +12,8 @@ class RouterTest extends TestCase
     protected function setUp():void
     {
         parent::setUp();
-        $this->router = new Route();
+        $container = new Container();
+        $this->router = new Route($container);
     }
     public function test_it_registers_a_route(): void
     {
@@ -32,7 +34,7 @@ class RouterTest extends TestCase
      */
     public function there_are_no_routes_when_router_is_created(): void
     {
-        $this->assertEmpty($this->router->routes);
+        $this->assertEmpty($this->router->routes());
     }
 
     /**

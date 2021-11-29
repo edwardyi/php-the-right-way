@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\ServerInfo;
 
-use App\Exceptions\Container\ContainerException;
-use App\Exceptions\NotFoundException;
+use App\ServerInfo\Exception\Container\NotFoundException;
+use App\ServerInfo\Exception\Container\ContainerException;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionNamedType;
@@ -15,6 +15,11 @@ use ReflectionUnionType;
 class Container implements ContainerInterface
 {
     private array $entries = [];
+
+    public function entries()
+    {
+        return $this->entries;
+    }
 
     public function get(string $id)
     {
@@ -91,7 +96,7 @@ class Container implements ContainerInterface
                 );
             }
 
-            // deal with php built-in scalar data type
+            // built-in scalar data type will not passing for this condition
             if ($type instanceof ReflectionNamedType && !$type->isBuiltin()) {
                 // resolve service object dependencies
                 return $this->get($type->getName());

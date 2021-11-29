@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exceptions\Container;
+namespace App\ServerInfo\Exception\Container;
 
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
