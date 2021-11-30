@@ -2,6 +2,7 @@
 
 use App\ServerInfo\Controllers\Home;
 use App\ServerInfo\Controllers\Invoice;
+use App\ServerInfo\Controllers\GeneratorExample;
 use App\ServerInfo\Exception\RouteNotFoundException;
 use App\ServerInfo\App;
 use App\ServerInfo\Config;
@@ -79,6 +80,12 @@ try {
     )->post(
         '/server_info.php/invoice/file_process',
         [Invoice::class, 'file_process']
+    )->get(
+        '/server_info.php/generator/large_array',
+        [GeneratorExample::class, 'large_array']
+    )->get(
+        '/server_info.php/generator/list_ticket_model',
+        [GeneratorExample::class, 'list_ticket_model']
     );
     //->resolve($_SERVER['REQUEST_URI'], strtolower($_SERVER['REQUEST_METHOD']));  // REQUEST_METHOD
 
